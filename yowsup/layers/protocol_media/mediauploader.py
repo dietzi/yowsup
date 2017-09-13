@@ -53,9 +53,11 @@ class MediaUploader(WARequest, threading.Thread):
     def encryptImg(self,img, refkey, mimetype):
         print(mimetype)
         if(mimetype == "audio/wav"):
+            print("###################################### WhatsApp Audio Keys ######################################")
             derivative = HKDFv3().deriveSecrets(binascii.unhexlify(refkey),
                                             "WhatsApp Audio Keys", 112)
         else:
+            print("###################################### WhatsApp Image Keys ######################################")
             derivative = HKDFv3().deriveSecrets(binascii.unhexlify(refkey),
                                             "WhatsApp Image Keys", 112)
         parts = ByteUtil.split(derivative, 16, 32)

@@ -198,6 +198,9 @@ class AxolotlReceivelayer(AxolotlBaseLayer):
         elif m.HasField("image_message"):
             handled = True
             self.handleImageMessage(node, m.image_message)
+        elif m.HasField("audio_message"):
+            handled = True
+            self.handleAudioMessage(node, m.audio_message)
 
         if not handled:
             print(m)
@@ -233,6 +236,30 @@ class AxolotlReceivelayer(AxolotlBaseLayer):
             "ip": "0"
         }, data = imageMessage.jpeg_thumbnail)
         messageNode.addChild(mediaNode)
+
+        self.toUpper(messageNode)
+
+    def handleAudioMessage(self, originalEncNode, audioMessage):
+        messageNode = copy.deepcopy(originalEncNode)
+        messageNode["type"] = "media"
+        mediaNode = ProtocolTreeNode("media", {
+            "type": "audio",
+            "filehash": audioMessage.file_sha256,
+            "size": str(audioMessage.file_length),
+            "url": audioMessage.url,
+            "mimetype": audioMessage.mime_type,
+            "duration": audioMessage.duration,
+            "unk": audioMessage.unk,
+            "encoding": "raw",
+            "file": "enc",
+            "ip": "0"
+        })
+        messageNode.addChild(mediaNode)
+        print("###########################################------------------------##########################################################################################")
+        print(originalEncNode)
+        print("#############################################################################################################################################################")
+        print(audioMessage)
+        print("#############################################################################################################################################################")
 
         self.toUpper(messageNode)
 

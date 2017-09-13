@@ -102,7 +102,7 @@ class AudioDownloadableMediaMessageProtocolEntity(DownloadableMediaMessageProtoc
 
         entity = DownloadableMediaMessageProtocolEntity.fromBuilder(builder)
         entity.__class__ = builder.cls
-        entity.setAudioProps(encoding = "wav", duration = 30, seconds = 30)
+        entity.setAudioProps(duration=builder.get("duration"))
         return entity
 
     @staticmethod
@@ -110,7 +110,7 @@ class AudioDownloadableMediaMessageProtocolEntity(DownloadableMediaMessageProtoc
         builder = AudioDownloadableMediaMessageProtocolEntity.getBuilder(to, path)
         builder.set("url", url)
         builder.set("ip", ip)
-        builder.set("duration", 30)
-        builder.set("mimetype", mimeType)
-        builder.set("unk", 30)
+        builder.set("duration", 31)
+        builder.set("mimetype", "audio/ogg; codecs=opus")
+        builder.set("unk", 0)
         return AudioDownloadableMediaMessageProtocolEntity.fromBuilder(builder)

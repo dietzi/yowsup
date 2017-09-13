@@ -313,8 +313,8 @@ class AxolotlSendLayer(AxolotlBaseLayer):
         audio_message.file_sha256 = binascii.unhexlify(mediaNode["filehash"].encode())
         audio_message.file_length = int(mediaNode["size"])
         audio_message.media_key = binascii.unhexlify(mediaNode["anu"].encode())
-        audio_message.duration = 30
-        audio_message.unk = 30
+        audio_message.duration = int(mediaNode["duration"])
+        audio_message.unk = 0#int(mediaNode["unk"])
 		
         print ("mimeType: "+ mediaNode["mimetype"])
 
@@ -322,7 +322,7 @@ class AxolotlSendLayer(AxolotlBaseLayer):
         print("#############################################################################################################################################################")
         print(audio_message)
         print("#############################################################################################################################################################")
-        print(m)
+        print(mediaNode)
         print("#############################################################################################################################################################")
         return m
 
