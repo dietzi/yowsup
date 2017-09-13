@@ -111,6 +111,6 @@ class AudioDownloadableMediaMessageProtocolEntity(DownloadableMediaMessageProtoc
         builder.set("url", url)
         builder.set("ip", ip)
         builder.set("duration", 31)
-        builder.set("mimetype", "audio/ogg; codecs=opus")
+        builder.set("mimetype", "audio/mpeg")#ogg; codecs=opus")
         builder.set("unk", 0)
         return AudioDownloadableMediaMessageProtocolEntity.fromBuilder(builder)

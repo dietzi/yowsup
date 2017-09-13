@@ -34,7 +34,6 @@ class DownloadableMediaMessageProtocolEntity(MediaMessageProtocolEntity):
         out += "IP: %s\n" % self.ip
         out += "File Size: %s\n" % self.size
         out += "File name: %s\n" % self.fileName
-        print (out)
 
         return out
 
@@ -71,10 +70,6 @@ class DownloadableMediaMessageProtocolEntity(MediaMessageProtocolEntity):
         mediaNode.setAttribute("mediakey", self.url["mediaKey"])
         mediaNode.setAttribute("anu", self.url["mediaKey"])
         mediaNode.setAttribute("encoding", "raw")
-        print ("MEDIAKEY:" + str(self.url["mediaKey"]))
-        print ("MIMETYPE:" + self.mimeType)
-        print ("FILEHASH:" + self.fileHash)
-        print ("URL     :" + self.url["url"].encode())
         return node
 
     def isEncrypted(self):
@@ -94,9 +89,6 @@ class DownloadableMediaMessageProtocolEntity(MediaMessageProtocolEntity):
             mediaNode.getAttributeValue("file"),
             mediaNode.getAttributeValue("mediakey")
             )
-        #print("##########################    22    ####################################")
-        #print(mediaNode)
-        #print("########################################################################")
         return entity
 
     @staticmethod

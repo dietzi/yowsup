@@ -51,13 +51,13 @@ class MediaUploader(WARequest, threading.Thread):
         return s + (16 - len(s) % 16) * chr(16 - len(s) % 16)
 
     def encryptImg(self,img, refkey, mimetype):
-        print(mimetype)
+        #print(mimetype)
         if(mimetype[:5] == "audio"):
-            print("###################################### WhatsApp Audio Keys ######################################")
+            #print("###################################### WhatsApp Audio Keys ######################################")
             derivative = HKDFv3().deriveSecrets(binascii.unhexlify(refkey),
                                             "WhatsApp Audio Keys", 112)
         else:
-            print("###################################### WhatsApp Image Keys ######################################")
+            #print("###################################### WhatsApp Image Keys ######################################")
             derivative = HKDFv3().deriveSecrets(binascii.unhexlify(refkey),
                                             "WhatsApp Image Keys", 112)
         parts = ByteUtil.split(derivative, 16, 32)
@@ -94,9 +94,7 @@ class MediaUploader(WARequest, threading.Thread):
             f = open(sourcePath, 'rb')
             stream = f.read()
             f.close()
-            #refkey = binascii.hexlify(os.urandom(32))
             refkey = "bf6429eaf28e18801dd3ee29ab760c07f2e2efa6714129c2dc34d0c146c2930c"
-            print ("############################# RefKey: " + refkey)
             stream=self.encryptImg(stream,refkey,filetype)
             fenc = open(filename+".enc", 'wb')  # bahtiar
             fenc.write(stream)
@@ -206,7 +204,7 @@ class MediaUploader(WARequest, threading.Thread):
             if result["url"] is not None:
                 if self.successCallback:
                     # self.successCallback(sourcePath, self.jid, result["url"])
-                    print (result)
+                    #print (result)
                     result["mediaKey"]=refkey
                     result["hashcode"]=b64Hash.decode()
                     self.successCallback(sourcePath, self.jid, result)

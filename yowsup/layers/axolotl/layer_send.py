@@ -47,13 +47,11 @@ class AxolotlSendLayer(AxolotlBaseLayer):
         v2 = node["to"]
         if node.getChild("enc"):  # media enc is only for v2 messsages
             messageData = self.serializeToProtobuf(node)
-            print ("Messagedata: ")
-            print (messageData)
             if messageData:
                 sessionCipher = self.getSessionCipher(recipient_id)
                 messageData = messageData.SerializeToString() + self.getPadding()
                 ciphertext = sessionCipher.encrypt(messageData)
-                print ("masuk ENC")
+                #print ("masuk ENC")
 
                 mediaType = node.getChild("enc")["type"] if node.getChild("enc") else None
 
@@ -74,7 +72,7 @@ class AxolotlSendLayer(AxolotlBaseLayer):
                 )
                 self.toLower(encEntity.toProtocolTreeNode())
             else:  # case of unserializable messages (audio, video) ?
-                print ("kok masuk sini?")
+                #print ("kok masuk sini?")
                 self.toLower(node)
         else:
             self.toLower(node)
@@ -84,7 +82,7 @@ class AxolotlSendLayer(AxolotlBaseLayer):
         if node.tag == "message" and node["to"] not in self.skipEncJids and not node.getChild("enc") and (not node.getChild("media") or node.getChild("media")["mediakey"]):
             self.processPlaintextNodeAndSend(node)
         elif node.getChild("enc"):
-            print ("Masuk enc")
+            #print ("Masuk enc")
             self.handleEncNode(node)
         else:
             self.toLower(node)
@@ -302,10 +300,6 @@ class AxolotlSendLayer(AxolotlBaseLayer):
         return m
 
     def serializeAudioToProtobuf(self, mediaNode, message = None):
-        print("#############################################################################################################################################################")
-        print(mediaNode)
-        print(mediaNode["filehash"].encode())
-        print(mediaNode["filehash"])
         m = message or Message()
         audio_message = AudioMessage()
         audio_message.url = mediaNode["url"]
@@ -316,19 +310,12 @@ class AxolotlSendLayer(AxolotlBaseLayer):
         audio_message.duration = int(mediaNode["duration"])
         audio_message.unk = 0#int(mediaNode["unk"])
 		
-        print ("mimeType: "+ mediaNode["mimetype"])
+        #print ("mimeType: "+ mediaNode["mimetype"])
 
         m.audio_message.MergeFrom(audio_message)
-        print("#############################################################################################################################################################")
-        print(audio_message)
-        print("#############################################################################################################################################################")
-        print(mediaNode)
-        print("#############################################################################################################################################################")
         return m
 
     def serializeImageToProtobuf(self, mediaNode, message = None):
-        print("#############################################################################################################################################################")
-        #print(mediaNode)
         m = message or Message()
         image_message = ImageMessage()
         image_message.url = mediaNode["url"]
@@ -336,24 +323,13 @@ class AxolotlSendLayer(AxolotlBaseLayer):
         image_message.height = int(mediaNode["height"])
         image_message.mime_type = mediaNode["mimetype"]
         image_message.file_sha256 = binascii.unhexlify(mediaNode["filehash"].encode())
-        #image_message.file_sha256 = mediaNode["filehash"]
         image_message.file_length = int(mediaNode["size"])
         image_message.media_key = binascii.unhexlify(mediaNode["anu"].encode())
-        #image_message.media_key = mediaNode["anu"]
         image_message.caption = mediaNode["caption"] or ""
         image_message.jpeg_thumbnail = mediaNode.getData()
 		
-        print ("mimeType: "+ mediaNode["mimetype"])
-
         m.image_message.MergeFrom(image_message)
-        print("#############################################################################################################################################################")
-        #print(image_message)
-        print("#############################################################################################################################################################")
-        #print(m)
-        print("#############################################################################################################################################################")
         return m
-        # return
-        # return image_message
 
     def serializeUrlToProtobuf(self, node, message = None):
         pass
